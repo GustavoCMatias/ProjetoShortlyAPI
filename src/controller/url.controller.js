@@ -31,3 +31,12 @@ export async function getUrlFromId(req, res){
         res.status(500).send(error.message)
     }
 }
+
+export async function getUrlFromShortUrl(req, res){
+    const {shortUrl} = req.params
+
+    const {rows, rowCount} = await db.query('UPDATE links SET view_count = view_count+1 WHERE short_link = $1 RETURNING original_link', [shortUrl])
+
+    if(rowCount === 0)return res.sendStatus(404)
+    res.redirect(302, rows[0].original_link)
+}
