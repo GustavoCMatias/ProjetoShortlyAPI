@@ -16,3 +16,18 @@ export async function shortenUrl(req, res){
     }
     
 }
+
+export async function getUrlFromId(req, res){
+    const {id} = req.params
+    try{
+        const {rows, rowCount} = await db.query('SELECT id, short_link, original_link FROM links WHERE id = $1', [id])
+        if(rowCount === 0) return res.sendStatus(404)
+        res.status(200).send({
+            id,
+            shortUrl: rows[0].short_link,
+            url: rows[0].original_link
+        })
+    }catch (error) {
+        res.status(500).send(error.message)
+    }
+}
