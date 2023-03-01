@@ -2,7 +2,7 @@ import bcrypt from "bcrypt"
 import { v4 as uuidv4 } from 'uuid'
 import { db } from "../database/database.connection.js"
 
-export async function signIn(req, res){
+export async function signIn(_, res){
     const user = res.locals.user
 
 
@@ -13,7 +13,7 @@ export async function signIn(req, res){
         const token = uuidv4()
 
         await db.query('INSERT INTO sessions (user_id, token) values ($1, $2)', [user, token])
-        res.status(200).send(token)
+        res.status(200).send({token})
     }catch (error) {
         res.status(500).send(error.message)
     }
