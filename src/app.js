@@ -10,7 +10,6 @@ server.use(express.json())
 server.use(cors())
 server.use([authRouter, urlRouter, userRouter, rankingRouter])
 
-server.listen(5000, () =>{
-    console.log('deu bom')
-})
+const port = process.env.PORT || 5000;
+server.listen(port, () => console.log(`Server running in port: ${port}`));
 
